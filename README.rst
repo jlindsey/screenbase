@@ -13,3 +13,24 @@ Dependencies
 On macOS, install `terminal-notifier` from homebrew to have notifications when
 complete.
 
+Installation
+------------
+
+Simply:
+
+.. code-block:: bash
+
+  $ pip install screenbase
+
+
+Usage
+-----
+
+By default, screenbase watches your ``~/Desktop`` directory for files matching a regex
+tailored to macOS screenshot filenames (``Screen Shot 2017-03-09 at 5.29.50 PM.png``).
+This regex is not configurable at the moment, but the watch directory is via the
+``-d`` flag.
+
+Similarly, screenbase uses your current username (via Python's ``getpass.getuser()``)
+as your keybase username by default, which it uses to move files into your kbfs public
+folder and generate the URL to it. This can be configured via the ``-u`` flag.
