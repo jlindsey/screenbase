@@ -15,6 +15,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='screenbase',
+    version='1.0.0',
     description='Tool for automatically copying screenshots into your Keybase public folder',
     long_description=long_desc,
     url='https://github.com/jlindsey/screenbase',
