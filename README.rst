@@ -28,12 +28,26 @@ Usage
 
 By default, screenbase watches your ``~/Desktop`` directory for files matching a regex
 tailored to macOS screenshot filenames (``Screen Shot 2017-03-09 at 5.29.50 PM.png``).
-This regex is not configurable at the moment, but the watch directory is via the
-``-d`` flag.
+This regex is configurable as a string passed with the ``-m`` flag. The watch
+directory is configurable via the ``-d`` flag.
 
 Similarly, screenbase uses your current username (via Python's ``getpass.getuser()``)
 as your keybase username by default, which it uses to move files into your kbfs public
 folder and generate the URL to it. This can be configured via the ``-u`` flag.
+
+Screenbase will look for a YAML-formatted config file in
+``~/.config/screenbase`` (this path configurable with the ``-c`` flag). If it
+finds it, it will overload the default configs with the values it contains. The
+keys should match the long form of the command line flags you can see via
+``--help``. Eg:
+
+.. code-block:: yaml
+
+   ---
+   user: jlindsey
+   directory: /Users/jlindsey/screenshots
+   verbose: True
+
 
 License
 -------
