@@ -50,7 +50,7 @@ def _get_args():
     parser.add_argument(
         '-v',
         '--verbose',
-        help='Directory to watch for new screenshots',
+        help='Increase logging verbosity',
         action='store_true',
         default=DEFAULT_DIR)
 
