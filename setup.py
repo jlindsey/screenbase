@@ -27,9 +27,12 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_desc = f.read()
 
+with open(path.join(here, 'VERSION'), encoding='utf-8') as f:
+    version = f.read().strip()
+
 setup(
     name='screenbase',
-    version='1.0.0',
+    version=version,
     description='Tool for automatically copying screenshots into your Keybase public folder',
     long_description=long_desc,
     url='https://github.com/jlindsey/screenbase',
@@ -38,7 +41,7 @@ setup(
     packages=find_packages(exclude=['docs', 'tests']),
     license='GPL-3.0+',
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
