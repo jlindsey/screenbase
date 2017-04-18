@@ -20,6 +20,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 from argparse import ArgumentParser
+from collections import namedtuple
 from getpass import getuser
 from os import path
 from time import sleep
@@ -27,14 +28,25 @@ from time import sleep
 from watchdog.events import LoggingEventHandler
 from watchdog.observers import Observer
 
+import yaml
+
+from . import __VERSION__
 from .watchers import ScreenshotWatcher
 
+DEFAULT_CONFIG_FILE = path.join(path.expanduser('~'), '.config', 'screenbase')
 DEFAULT_DIR = path.expanduser('~/Desktop')
 DEFAULT_USER = getuser()
+DEFAULT_MATCHER_REGEX = r'^Screen\sShot.*?\sat\s.*?\.png'
 
 
 def _get_args():
-    parser = ArgumentParser()
+    parser = ArgumentParser(version=__VERSION__)
+    parser.add_argument(
+        '-c',
+        '--config',
+        metavar='PATH',
+        help='Path to a config file',
+        default=DEFAULT_CONFIG_FILE)
     parser.add_argument(
         '-u',
         '--user',
@@ -48,7 +60,13 @@ def _get_args():
         help='Directory to watch for new screenshots',
         default=DEFAULT_DIR)
     parser.add_argument(
-        '-v',
+        '-m',
+        '--matcher',
+        metavar='REGEX',
+        help='RegEx string to match files against for upload',
+        default=DEFAULT_MATCHER_REGEX)
+    parser.add_argument(
+        '-V',
         '--verbose',
         help='Increase logging verbosity',
         action='store_true',
@@ -57,17 +75,34 @@ def _get_args():
     return parser.parse_args()
 
 
+def _get_config(args):
+    args_dict = vars(args)
+    Config = namedtuple('Config', args_dict.keys()) #pylint: disable=invalid-name
+    config = Config(**args_dict)
+
+    if path.exists(args.config):
+        logging.info('Loading config from %s', args.config)
+        with open(args.config) as config_file:
+            parsed_config = yaml.safe_load(config_file.read())
+            if parsed_config is not None:
+                new_config = args_dict.copy()
+                new_config.update(parsed_config)
+                config = Config(**new_config)
+
+    return config
+
+
 def run():
     """
     Run the CLI tool
     """
 
-    args = _get_args()
-    observer = Observer()
-
     logging.basicConfig(level=logging.INFO,
                         format='%(asctime)s - %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S')
+
+    args = _get_config(_get_args())
+    observer = Observer()
 
     if args.verbose is True:
         logging.basicConfig(level=logging.DEBUG,

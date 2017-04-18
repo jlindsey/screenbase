@@ -76,7 +76,7 @@ class ScreenshotWatcher(FileSystemEventHandler):
         filepath = event.src_path if isinstance(
             event, FileCreatedEvent) else event.dest_path
 
-        if re.match(r'^Screen\sShot.*?\sat\s.*?\.png',
+        if re.match(self.args.matcher,
                     os.path.basename(filepath)):
             moved = self._move_screenshot(filepath)
         else:
