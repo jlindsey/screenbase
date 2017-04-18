@@ -48,7 +48,8 @@ setup(
     keywords='screenshots keybase',
     install_requires=[
         'watchdog>=0.8.2',
-        'pyperclip>=1.5.27'
+        'pyperclip>=1.5.27',
+        'PyYAML>=3.12',
     ],
     entry_points={
         'console_scripts': [
